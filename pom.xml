@@ -30,7 +30,7 @@
                     <archive>
                         <manifest>
                             <!--<addClasspath>true</addClasspath>-->
-                            <mainClass>com.services.rest.cvcoding.vegasipsum.Solution</mainClass>
+                            <mainClass>com.cvcoding.vegasipsum.Solution</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Class-Path>${endorsed.dir}/jackson-databind-2.8.1.jar 
