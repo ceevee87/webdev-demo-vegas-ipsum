@@ -33,6 +33,9 @@ public class VegasIpsum implements LoremIpsum {
     // is what they'll want to change.
     private int _maxParagraphSize;
     
+    private int _minSentenceSize;
+    private int _maxSentenceSize;
+    
     // a list of lorem ipsum words *or* phrases. So, it is possible to
     // have an array that looks like:
     // [0] : 'lorem'
@@ -50,17 +53,16 @@ public class VegasIpsum implements LoremIpsum {
     // loremChain array, wrapping around if necessary.
     private int _curWordLocation;
     
-    // not sure if we'll use this or not.
-    private Iterator<String> _wordItr;
-
     public VegasIpsum() {
         // standard paragraphs are 3-6 sentences long.
         this._minParagraphSize = 3;
         this._maxParagraphSize = 6;
         
+        this._minSentenceSize = 5;
+        this._maxSentenceSize = 10;
+
         this._loremChain = new ArrayList<>();
         this._curWordLocation = 0;
-        this._wordItr = null;
         
         // load up the base lorem ipsum text
         readBaseLoremIpsumText();
@@ -140,6 +142,7 @@ public class VegasIpsum implements LoremIpsum {
     public void shuffle() {
         // we shuffle the _loremChain to get random stream of words we 
         // can use for fetching words or paragraphs.
+        _curWordLocation = 0;
         
         // we maintain an index that points to the end of the word chain.
         // for each iteration we'll pick a random location from 0 to ii-1
@@ -155,14 +158,77 @@ public class VegasIpsum implements LoremIpsum {
         }
     }
 
+    private String capitalize(String s) {
+        // capitalize the first char in the string. watch out, though.
+        // you'll get a nasty exception of the string is one char long.
+        // so, we check for that condition.
+        if (s.length() > 1)
+             return s.substring(0,1).toUpperCase() + s.substring(1);
+        else if (s.length() == 1)
+             return s.substring(0).toUpperCase();
+        return s;
+    }
+    
     @Override
     public String getWords(int min, int max) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int numWords = RAND.nextInt(max-min+1) + min;
+        
+        StringBuilder sentence = new StringBuilder();
+        // de-complicate the iteration of words from loremChain by not
+        // worrying about if we're fetching more words than are in the list.
+        // we'll use modulo to 'wrap-around' to the beginning if we fetch
+        // more words than are in the loremChar variable.
+        for (int ii = 0; ii < numWords; ii++) {
+            String w = _loremChain.get((_curWordLocation + ii) % _loremChain.size());
+            sentence.append(w);
+            sentence.append(" ");
+            
+            // remember, we keep track of where we are fetching words in the
+            // loremChain array.
+            _curWordLocation++;
+        }
+        return sentence.toString().trim();
     }
 
+    private char getSentenceTerminator() {
+        // end 80% of the sentences with periods
+        //     10% with question marks
+        //     10% with exclamation marks
+        
+        int rnum = RAND.nextInt(10);
+        if (rnum < 8)
+            return '.';
+        else if (rnum > 8)
+            return '?';
+        return '!';
+    }
+    
+    private int getRandomParagraphSize() {
+        return RAND.nextInt(_maxParagraphSize-_minParagraphSize+1) + 
+                _minParagraphSize;
+    }
+    
     @Override
     public List<String> getParagraphs(int min, int max) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        // how many paragrapsh?
+        int numParagraphs = RAND.nextInt(max-min+1) + min;
+
+        List<String> res = new ArrayList<>();
+        for (int ii = 0; ii < numParagraphs; ii++) {
+            // how many sentences in this paragraph??
+            int numSentences = getRandomParagraphSize();
+            StringBuilder paragraph = new StringBuilder();
+            for (int jj = 0; jj < numSentences; jj++) {
+                StringBuilder sentence = new StringBuilder(getWords(_minSentenceSize, _maxSentenceSize));
+                sentence.append(getSentenceTerminator());
+                sentence.append(' ');
+                paragraph.append(capitalize(sentence.toString()));
+            }
+            res.add(paragraph.toString());
+        }
+        // send back an array of sentences (strings).
+        return res;
     }
 
     @Override
@@ -172,19 +238,12 @@ public class VegasIpsum implements LoremIpsum {
 
     @Override
     public void addWords(String phrase, int count) {
+        // remember, just as easily as we can add 'lorem' we can
+        // also add 'bet big or go home' as a single "word". 
+        // hence, the term 'phrase' for input variable.
         while (count-- > 0) {
             _loremChain.add(phrase);
         }
-    }
-
-    @Override
-    public void addWords(List<String> phrases) {
-        addWords(phrases, 1);
-    }
-
-    @Override
-    public void addWords(List<String> phrases, int count) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

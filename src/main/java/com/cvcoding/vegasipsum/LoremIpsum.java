@@ -28,8 +28,6 @@ public interface LoremIpsum {
     // more frequently than average set count to some number > 10.
     public void addWords(String phrase);
     public void addWords(String phrase, int count);
-    public void addWords(List<String> phrases);
-    public void addWords(List<String> phrases, int count);
 
     // configure how many sentences per paragraph
     public void setParagraphSizes(int min, int max);
