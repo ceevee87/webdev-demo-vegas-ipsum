@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
@@ -47,7 +46,7 @@ public class VegasIpsum implements LoremIpsum {
     // the phrases are not important for the standard lorem ipusm but they
     // are for people who want to customize (insert) their own content into
     // the lorem ipsum vocabulary. 
-    private ArrayList<String> _loremChain;
+    private final ArrayList<String> _loremChain;
     
     // as we fetch words or paragraphs we simply iterate through entire
     // loremChain array, wrapping around if necessary.
