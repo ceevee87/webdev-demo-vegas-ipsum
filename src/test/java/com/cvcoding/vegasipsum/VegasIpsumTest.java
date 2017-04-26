@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -93,9 +94,10 @@ public class VegasIpsumTest {
         expResult.add("elit");
 
         List<String> result = instance.getLoremChain();
-        
         assertEquals(expResult, result);
     }
+    
+    
     /**
      * Test of getLoremChainStr method, of class VegasIpsum.
      */
@@ -117,6 +119,25 @@ public class VegasIpsumTest {
         assertNotEquals(null, result);
     }
 
+    @Test
+    public void testGetLoremChainStr_3() {
+        System.out.println("getLoremChainStr (punct) string not null.");
+        VegasIpsum instance = new VegasIpsum();
+        instance.readLoremText(_punctuationLoremFileName);
+        String result = instance.getLoremChainStr();
+        assertNotEquals(null, result);
+    }
+    
+    @Test
+    public void testGetLoremChainStr_4() {
+        System.out.println("getLoremChainStr (punct) string doens't contain punctuation.");
+        VegasIpsum instance = new VegasIpsum();
+        instance.readLoremText(_punctuationLoremFileName);
+        String result = instance.getLoremChainStr();
+        String expResult = "lorem ipsum dolor sit amet consectetur adipiscing elit cras fermentum venenatis luctus maecenas tempus nulla sit amet eros porttitor convallis suspendisse fermentum non tortor at bibendum";
+        assertEquals(expResult, result);
+    }
+    
 //    /**
 //     * Test of readVegasText method, of class VegasIpsum.
 //     */
@@ -244,37 +265,52 @@ public class VegasIpsumTest {
         assertEquals(expResult, result);
     }
     
-//    @Test
-//    public void testGetWords_v_GetLoremChainStr() {
-//        System.out.println("getWords (extreme word count) not null string.");
-//        // the min and max are both larger than the lorem word count.
-//        // this should not fail because we should "wrap-around" when fetching
-//        // words from the loremChain.
-//        int min = 1786;
-//        int max = 1786;
-//        VegasIpsum instance = new VegasIpsum();
-//        instance.setSeed(0L);
-//        String result = instance.getWords(min, max);
-//        String expResult = instance.getLoremChainStr();
-//        assertEquals(expResult, result);
-//    }
-    
-//    /**
-//     * Test of getParagraphs method, of class VegasIpsum.
-//     */
-//    @Test
-//    public void testGetParagraphs() {
-//        System.out.println("getParagraphs");
-//        int min = 0;
-//        int max = 0;
-//        VegasIpsum instance = new VegasIpsum();
-//        List<String> expResult = null;
-//        List<String> result = instance.getParagraphs(min, max);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
+    /**
+     * Test of getParagraphs method, of class VegasIpsum.
+     */
+    @Test
+    public void testGetParagraphs_1() {
+        System.out.println("getParagraphs");
+        VegasIpsum instance = new VegasIpsum();
+        instance.readLoremText(_stdLoremFileName);
+        instance.setSeed(0L);
+
+        int min = 7;
+        int max = 17;
+        List<String> paragraphs = instance.getParagraphs(min, max);
+        assertEquals(7, paragraphs.size());
+        
+        // check the location of the first period in each paragraph.
+        int[] expResult = {38,42,32,37,50,30,150};
+        int[] result = new int[7];
+        
+        for (int ii = 0; ii < paragraphs.size(); ii++) {
+            result[ii] = paragraphs.get(ii).indexOf(".");
+        }
+        Assert.assertArrayEquals(expResult, result);
+    }
+    @Test
+    public void testGetParagraphs_2() {
+        System.out.println("getParagraphs--check paragraph lengths");
+        VegasIpsum instance = new VegasIpsum();
+        instance.readLoremText(_stdLoremFileName);
+        instance.setSeed(0L);
+
+        int min = 4;
+        int max = 7;
+        List<String> paragraphs = instance.getParagraphs(min, max);
+        assertEquals(6, paragraphs.size());
+        
+        // check the location of the first period in each paragraph.
+        int[] expResult = {394,321,178,248,318,127};
+        int[] result = new int[6];
+        
+        for (int ii = 0; ii < paragraphs.size(); ii++) {
+            result[ii] = paragraphs.get(ii).length();
+        }
+        Assert.assertArrayEquals(expResult, result);
+    }
+
 //    /**
 //     * Test of addWords method, of class VegasIpsum.
 //     */
