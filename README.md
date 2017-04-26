@@ -22,9 +22,9 @@ This project demonstrates (will demonstrate) the following technologies:
 - [x] implement java class interface that defines basic features of a lorem ipsum generator.
 - [x] implement the VegasIpsum generator that is based on the basic java lorem ipsum generator
 - [x] add JUnit testing for VegasIpsum (java) generator.
-- [] create a WebApi that implements GET operations using the VegasIpsum backend engine.
-- [] deploy VegasIpsum WebApi onto an Apache Tomcat server
-- [] validate WebApi interface to the VegasIpsum generator with Postman & curl.
-- [] write a HTML/JS/CSS front-end that interacts with the deployed (Tomcat) Web application
+- [ ] create a WebApi that implements GET operations using the VegasIpsum backend engine.
+- [ ] deploy VegasIpsum WebApi onto an Apache Tomcat server
+- [ ] validate WebApi interface to the VegasIpsum generator with Postman & curl.
+- [ ] write a HTML/JS/CSS front-end that interacts with the deployed (Tomcat) Web application
 
 
