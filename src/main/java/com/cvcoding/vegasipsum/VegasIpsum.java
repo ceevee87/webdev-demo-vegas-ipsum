@@ -64,7 +64,7 @@ public class VegasIpsum implements LoremIpsum {
         this._curWordLocation = 0;
         
         // load up the base lorem ipsum text
-        readBaseLoremIpsumText();
+//        readLoremText(LOREM_FILE_NAME);
     }
 
     public void setSeed(long seed) {
@@ -106,13 +106,13 @@ public class VegasIpsum implements LoremIpsum {
         }
     }
     
-    private void readBaseLoremIpsumText() {
+    public final void readLoremText(String fname) {
         // load the _loremChain variable with base lorem ipusm text that
         // is already included in the project build.
         // later, it will be up to the user to add in additional text items.
         List<String> lines = null;
         try {
-            lines = Files.readAllLines(Paths.get(LOREM_FILE_NAME));
+            lines = Files.readAllLines(Paths.get(fname));
         } catch (IOException ex) {
             Logger.getLogger(Solution.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(-1);
@@ -122,6 +122,7 @@ public class VegasIpsum implements LoremIpsum {
         // storing words. 
         // we'll deal with putting punctuation back in when the user 
         // uses the getParagraphs method.
+        if (_loremChain.size() > 0) _loremChain.clear();
         String punctRegex = "[^\\s\\w]";
         for (String line : lines) {
             if (line.length() == 0) continue ;
@@ -167,10 +168,22 @@ public class VegasIpsum implements LoremIpsum {
              return s.substring(0).toUpperCase();
         return s;
     }
+
+    int getRandomWordCount(int min, int max) {
+        if (min == max) return min;
+        if (min > max) {
+            // fixing this could incur bad-habits on the user side but
+            // i'd really rather not throw an error
+            int tmp = min;
+            min = max;
+            max = tmp;
+        }        
+        return RAND.nextInt(max-min+1) + min;
+    }
     
     @Override
     public String getWords(int min, int max) {
-        int numWords = RAND.nextInt(max-min+1) + min;
+        int numWords = getRandomWordCount(min, max);
         
         StringBuilder sentence = new StringBuilder();
         // de-complicate the iteration of words from loremChain by not
@@ -182,10 +195,11 @@ public class VegasIpsum implements LoremIpsum {
             sentence.append(w);
             sentence.append(" ");
             
-            // remember, we keep track of where we are fetching words in the
-            // loremChain array.
-            _curWordLocation++;
         }
+        // remember, we keep track of where we are fetching words in the
+        // loremChain array. We need to advance this counter based on the
+        // the number of words we fetched above.
+        _curWordLocation += numWords;
         return sentence.toString().trim();
     }
 
