@@ -34,8 +34,8 @@ public class VegasIpsumResource {
     // generator going. I'll come back to this later and put in more generic
     // code for determining where to pick up supplemental text files shipped
     // and deployed with this application.
-    private final String _baseLoremTxtFile = "/opt/tomcat/webapps/VegasIpsum/META-INF/lorem.ipsum.seed.txt";
-    private final String _vegasLoremTxtFile = "/opt/tomcat/webapps/VegasIpsum/META-INF/vegas.ipsum.txt";
+    private final String _baseLoremTxtFile = "/opt/tomcat/webapps/VegasIpsum/lorem.ipsum.seed.txt";
+    private final String _vegasLoremTxtFile = "/opt/tomcat/webapps/VegasIpsum/vegas.ipsum.txt";
     
     public VegasIpsumResource() {
         this._vegasIpsumGenerator = new VegasIpsum();

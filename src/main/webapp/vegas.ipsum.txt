@@ -1,0 +1,39 @@
+deck of cards:7
+lucky 7:12
+snake eyes:20
+five-hundy by midnight:30
+craps:20
+pay up, sucker:20
+box cars:20
+twenty-one:20
+blackjack:20
+dealer bust:20
+double down:20
+split aces:20
+ace of hearts:20
+ace of clubs:20
+ace of diamonds:20
+ace of spades:20
+roulette wheel:20
+slot machine:20
+what happens in vegas stays in vegas:20
+jackpot:20
+green felt:20
+all in:20
+money cage:20
+color up:20
+cash out:20
+beat the odds:20
+counting cards:20
+concierge service:20
+high roller:20
+penthouse suite:20
+the river:20
+no risk, no reward:50
+big blind:20
+little blind:20
+cosmo bar:20
+flat broke:20
+stack 'em and rack 'em:9
+one arm bandit:5
+
