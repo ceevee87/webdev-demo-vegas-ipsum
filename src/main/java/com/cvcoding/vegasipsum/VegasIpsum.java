@@ -86,7 +86,7 @@ public class VegasIpsum implements LoremIpsum {
             lines = Files.readAllLines(Paths.get(fname));
         } catch (IOException ex) {
             Logger.getLogger(Solution.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(-1);
+            return ;
         }
         
         for (String line : lines) {
@@ -115,7 +115,7 @@ public class VegasIpsum implements LoremIpsum {
             lines = Files.readAllLines(Paths.get(fname));
         } catch (IOException ex) {
             Logger.getLogger(Solution.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(-1);
+            return ;
         }
         
         // I want to remove all punctuation. right now, I'm only concerned with
@@ -140,6 +140,8 @@ public class VegasIpsum implements LoremIpsum {
 
     @Override
     public void shuffle() {
+        if (_loremChain.isEmpty()) return;
+        
         // we shuffle the _loremChain to get random stream of words we 
         // can use for fetching words or paragraphs.
         _curWordLocation = 0;
@@ -183,6 +185,8 @@ public class VegasIpsum implements LoremIpsum {
     
     @Override
     public String getWords(int min, int max) {
+        if (_loremChain.isEmpty()) return "got nothing.";
+        
         int numWords = getRandomWordCount(min, max);
         
         StringBuilder sentence = new StringBuilder();
@@ -223,6 +227,7 @@ public class VegasIpsum implements LoremIpsum {
     
     @Override
     public List<String> getParagraphs(int min, int max) {
+        if (_loremChain.isEmpty()) return null;
         
         // how many paragrapsh?
         int numParagraphs = RAND.nextInt(max-min+1) + min;
