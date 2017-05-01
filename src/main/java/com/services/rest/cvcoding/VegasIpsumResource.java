@@ -6,16 +6,18 @@
 package com.services.rest.cvcoding;
 
 import com.cvcoding.vegasipsum.VegasIpsum;
+
+// jackson databind
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+// regular java stuff
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
 import java.util.List;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 
 // jersey bundle
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -65,18 +67,5 @@ public class VegasIpsumResource {
         final List<String> P = _vegasIpsumGenerator.getParagraphs(4, 7);
         return streamOutStringsArr(P);
         
-//        String w;
-//        if (P == null) 
-//            w = "Nothing in the generator.\n";
-//        else {
-//            StringBuilder res = new StringBuilder();
-//            for (String paragraph : P) {
-//                res.append(paragraph);
-//                res.append('\n');
-//            }
-//            w = res.toString();
-//        }
-//
-//        return w;
     }
 }
