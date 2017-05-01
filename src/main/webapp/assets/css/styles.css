@@ -1,10 +1,24 @@
-body {
-    padding-top: 80px;
+.body {
+    /*padding-top: 10px;*/
     font-family: 'Ubuntu', sans-serif;  
+}
+
+.outer {
+  padding-top: 10px;
+  background-color: lightgrey;
+  max-width: 840px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 .vegas {
   margin-top: 15px;
   padding-top: 5px;
-  /*margin-bottom: 5px;*/
+}
+
+.landscape {
+    object-fit: contain;
 }

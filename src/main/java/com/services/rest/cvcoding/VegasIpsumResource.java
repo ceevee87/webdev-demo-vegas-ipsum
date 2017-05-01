@@ -58,16 +58,6 @@ public class VegasIpsumResource {
         };        
     }
     
-    private StreamingOutput streamOut(final String data) {
-        return new StreamingOutput() {
-            @Override
-            public void write(OutputStream os) throws IOException, WebApplicationException {
-                OutputStreamWriter osw = new OutputStreamWriter(os, Charset.forName("UTF-8").newEncoder());
-                osw.write(data);
-            }
-        };
-    }
-    
     @GET 
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
