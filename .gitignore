@@ -14,3 +14,7 @@ hs_err_pid*
 context.xml
 commit.log
 /nbproject/
+src/main/java/com/cvcoding/vegasipsum/Solution.java
+src/main/java/com/services/rest/cvcoding/ServletDebug.java
+
+servlet_context.junk
