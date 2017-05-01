@@ -32,6 +32,7 @@
                 <version>2.3</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <!--<attachClasses>true</attachClasses>-->
                 </configuration>
             </plugin>
 
@@ -78,11 +79,15 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
-<!--                <configuration>
-                    <compilerArguments>                        
+                <configuration>
+                    <excludes>
+                        <exclude>com/services/rest/cvcoding/ServletDebug.java</exclude>
+                        <exclude>cvcoding/vegasipsum/Solution.java</exclude>
+                    </excludes>
+<!--                    <compilerArguments>                        
                         <endorseddirs>${endorsed.dir}</endorseddirs>
-                    </compilerArguments>
-                </configuration>-->
+                    </compilerArguments>-->
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

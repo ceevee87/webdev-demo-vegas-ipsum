@@ -6,6 +6,7 @@
 package com.services.rest.cvcoding;
 
 import com.cvcoding.vegasipsum.VegasIpsum;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -46,6 +47,17 @@ public class VegasIpsumResource {
         _vegasIpsumGenerator.shuffle();            
     }
 
+    private StreamingOutput streamOutStringsArr(final List<String> paragraphs) {
+        return new StreamingOutput() {
+            @Override
+            public void write(OutputStream os) throws IOException, 
+                        WebApplicationException {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.writerWithDefaultPrettyPrinter().writeValue(os, paragraphs); 
+            }
+        };        
+    }
+    
     private StreamingOutput streamOut(final String data) {
         return new StreamingOutput() {
             @Override
@@ -58,22 +70,23 @@ public class VegasIpsumResource {
     
     @GET 
     @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getSomeIpsum() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public StreamingOutput getSomeIpsum() {
         final List<String> P = _vegasIpsumGenerator.getParagraphs(4, 7);
-
-        String w;
-        if (P == null) 
-            w = "Nothing in the generator.\n";
-        else {
-            StringBuilder res = new StringBuilder();
-            for (String paragraph : P) {
-                res.append(paragraph);
-                res.append('\n');
-            }
-            w = res.toString();
-        }
-
-        return w;
+        return streamOutStringsArr(P);
+        
+//        String w;
+//        if (P == null) 
+//            w = "Nothing in the generator.\n";
+//        else {
+//            StringBuilder res = new StringBuilder();
+//            for (String paragraph : P) {
+//                res.append(paragraph);
+//                res.append('\n');
+//            }
+//            w = res.toString();
+//        }
+//
+//        return w;
     }
 }
