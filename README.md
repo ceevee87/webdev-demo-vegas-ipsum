@@ -45,7 +45,7 @@ The [default landing page](http://localhost:8080/VegasIpsum/) for the applicatio
 
 ## IDE
 The java portion of this project was developed in NetBeans. The Web portion
-was developed using VS Code.
+was developed using VS Code on top of FireFox 53.0.
 
 The operating system is Ubuntu 16.04 LTS.
 
