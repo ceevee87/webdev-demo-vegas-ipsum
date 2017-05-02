@@ -24,6 +24,9 @@ public class VegasIpsum implements LoremIpsum {
     private static final Random RAND = new Random();
     private static final String LOREM_FILE_NAME = "./src/main/resources/lorem.ipsum.seed.txt";
     
+    // the default number of paragraphs for the generator is 3.
+    private final int _DEFAULT_PARAGRAPH_CNT = 3;
+    
     // if people want to get a sentence at a time one option is to set min
     // and max to 1.
     private int _minParagraphSize;
@@ -32,6 +35,7 @@ public class VegasIpsum implements LoremIpsum {
     // is what they'll want to change.
     private int _maxParagraphSize;
     
+    // sentences need to have some length (min/max) associated with them.
     private int _minSentenceSize;
     private int _maxSentenceSize;
     
@@ -53,10 +57,12 @@ public class VegasIpsum implements LoremIpsum {
     private int _curWordLocation;
     
     public VegasIpsum() {
-        // standard paragraphs are 3-6 sentences long.
+        // standard paragraphs are 3 to 6 sentences long.
         this._minParagraphSize = 3;
         this._maxParagraphSize = 6;
         
+        // standard sentences are 5 to 10 "words" long (see note on
+        // contents of a loremChain)
         this._minSentenceSize = 5;
         this._maxSentenceSize = 10;
 
@@ -171,7 +177,7 @@ public class VegasIpsum implements LoremIpsum {
         return s;
     }
 
-    int getRandomWordCount(int min, int max) {
+    int getRandomCount(int min, int max) {
         if (min == max) return min;
         if (min > max) {
             // fixing this could incur bad-habits on the user side but
@@ -187,7 +193,7 @@ public class VegasIpsum implements LoremIpsum {
     public String getWords(int min, int max) {
         if (_loremChain.isEmpty()) return "got nothing.";
         
-        int numWords = getRandomWordCount(min, max);
+        int numWords = getRandomCount(min, max);
         
         StringBuilder sentence = new StringBuilder();
         // de-complicate the iteration of words from loremChain by not
@@ -221,16 +227,24 @@ public class VegasIpsum implements LoremIpsum {
     }
     
     private int getRandomParagraphSize() {
-        return RAND.nextInt(_maxParagraphSize-_minParagraphSize+1) + 
-                _minParagraphSize;
+        // paragraph size == the number of sentences in a paragraph.
+        
+        // the code check below is a bit excessive. however,
+        // we must ensure that max is always >= to min internally.
+        if (_maxParagraphSize < _minParagraphSize) {
+            int tmp = _maxParagraphSize;
+            _maxParagraphSize = _minParagraphSize;
+            _minParagraphSize = tmp;
+        }
+        return getRandomCount(_minParagraphSize, _maxParagraphSize);
     }
     
     @Override
     public List<String> getParagraphs(int min, int max) {
         if (_loremChain.isEmpty()) return null;
         
-        // how many paragrapsh?
-        int numParagraphs = RAND.nextInt(max-min+1) + min;
+        // how many paragraphs?
+        int numParagraphs = getRandomCount(min, max);
 
         List<String> res = new ArrayList<>();
         for (int ii = 0; ii < numParagraphs; ii++) {
@@ -249,6 +263,11 @@ public class VegasIpsum implements LoremIpsum {
         return res;
     }
 
+    @Override
+    public List<String> getParagraphs() {
+        return getParagraphs(_DEFAULT_PARAGRAPH_CNT, _DEFAULT_PARAGRAPH_CNT);
+    }
+    
     @Override
     public void addWords(String phrase) {
         addWords(phrase, 1);
@@ -281,5 +300,4 @@ public class VegasIpsum implements LoremIpsum {
         if (max > 0)
             this._maxParagraphSize = max;
     }
-    
 }

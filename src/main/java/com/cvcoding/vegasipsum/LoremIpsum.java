@@ -21,6 +21,9 @@ public interface LoremIpsum {
     // return a list paragraphs where each paragraph is a string.
     public List<String> getParagraphs(int min, int max);
     
+    // return a default amount of paragraphs
+    public List<String> getParagraphs();
+    
     // the default version of LoremIpsum should load in the latin
     // words already. the functions below allow you to augment this
     // vocabulary with your own fun words.

@@ -6,6 +6,7 @@
 package com.cvcoding.vegasipsum;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -270,7 +271,7 @@ public class VegasIpsumTest {
      */
     @Test
     public void testGetParagraphs_1() {
-        System.out.println("getParagraphs");
+        System.out.println("getParagraphs---check locations of periods.");
         VegasIpsum instance = new VegasIpsum();
         instance.readLoremText(_stdLoremFileName);
         instance.setSeed(0L);
@@ -301,13 +302,55 @@ public class VegasIpsumTest {
         List<String> paragraphs = instance.getParagraphs(min, max);
         assertEquals(6, paragraphs.size());
         
-        // check the location of the first period in each paragraph.
+        // check the length of each paragraph.
         int[] expResult = {394,321,178,248,318,127};
         int[] result = new int[6];
         
         for (int ii = 0; ii < paragraphs.size(); ii++) {
             result[ii] = paragraphs.get(ii).length();
         }
+        Assert.assertArrayEquals(expResult, result);
+    }
+    @Test
+    public void testGetParagraphs_3() {
+        System.out.println("getParagraphs--check default paragraph counts.");
+        VegasIpsum instance = new VegasIpsum();
+        instance.readLoremText(_stdLoremFileName);
+        instance.setSeed(0L);
+
+        int defaultParagraphCnt = 3;
+        List<String> paragraphs = instance.getParagraphs();
+        assertEquals(defaultParagraphCnt, paragraphs.size());
+        
+        // check the length of each paragraph.
+        int[] expResult = {324, 269, 240};
+        int[] result = new int[defaultParagraphCnt];
+        
+        for (int ii = 0; ii < paragraphs.size(); ii++) {
+            result[ii] = paragraphs.get(ii).length();
+        }
+        Assert.assertArrayEquals(expResult, result);
+    }
+    @Test
+    public void testGetParagraphs_4() {
+        System.out.println("getParagraphs--check paragraph counts when max < min");
+        VegasIpsum instance = new VegasIpsum();
+        instance.readLoremText(_stdLoremFileName);
+        instance.setSeed(0L);
+
+        int min = 10;
+        int max = 4;
+        List<String> paragraphs = instance.getParagraphs(min, max);
+        assertEquals(9, paragraphs.size());
+        
+        // check the length of each paragraph.
+        int[] expResult = {394, 321, 178, 248, 318, 127, 152, 130, 312};
+        int[] result = new int[9];
+        
+        for (int ii = 0; ii < paragraphs.size(); ii++) {
+            result[ii] = paragraphs.get(ii).length();
+        }
+        System.out.println("New period locations="+Arrays.toString(result));
         Assert.assertArrayEquals(expResult, result);
     }
 
