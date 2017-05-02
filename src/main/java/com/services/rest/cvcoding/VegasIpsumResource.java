@@ -68,10 +68,20 @@ public class VegasIpsumResource {
                                @DefaultValue("false") @QueryParam("start") boolean start) {
         
         final List<String> P = _vegasIpsumGenerator.getParagraphs(minp, maxp);
-        
-        P.add(0, "min paragraph count= " + String.valueOf(minp));
-        P.add(0,"max paragraph count= " + String.valueOf(maxp));
-        P.add(0, "start with Vegas ipsum...= " + String.valueOf(start));
+        // this is a total low-tech solution here to starting the lorem ipsum
+        // text as shown.
+        // what items did I skip over by doing this cheap solution?
+        //   - what if the first several characters were already 'vegas ipsum...'?
+        //   - why should this functionality be in the GET resource? shouldn't
+        //     this be a switch we send to get paragraphs?
+        //   - why stop at offering the starting text to be 'vegas ipsum ...'?
+        //     shouldn't we be able to configure (pick a custom text) how
+        //     to start the generated text?
+        if (start) {
+            StringBuilder newParagraph = new StringBuilder("Vegas ipsum dolor sit amet, ");
+            newParagraph.append(P.remove(0).toLowerCase());
+            P.add(0, newParagraph.toString());
+        }
         return streamOutStringsArr(P);
     }
 }
