@@ -1,14 +1,18 @@
 console.log("In ajax.js...");
 
-$('button#getsomeipsum').click(function(event) {
+$('div.landscape').on('submit','#getsomeipsum', function(event) {
+    event.preventDefault();
+    var url = $(this).attr('action'); //  + "?" + $(this).serialize();
+    console.log("URL="+url);
+    console.log("Query params="+$(this).serialize());
     $.ajax({ 
-        url: 'http://localhost:8080/VegasIpsum/api/', 
-        contentType : 'text/plain; charset=utf-8',
+        url: url, 
+        data: $(this).serialize(),
         type: 'GET', 
         success: function(data) { 
             $('p.loremtext').remove();
             data.forEach(function (p) {
-                // console.log(p);
+                console.log(p);
                 $('div.vegasipsumtext').append( "<p class=\"loremtext\">" + p + "</p>");
             });
         },
@@ -19,4 +23,12 @@ $('button#getsomeipsum').click(function(event) {
             console.log("Error: " + errorThrown); 
         } 
     });
+});
+
+$('#cb-lorem').click(function(){
+    if ($(this).is(':checked') == true) {
+        $(this).val(true);
+    } else {
+        $(this).val(false);
+    }
 });

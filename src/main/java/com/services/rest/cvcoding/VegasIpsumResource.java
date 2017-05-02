@@ -16,10 +16,11 @@ import java.io.OutputStream;
 import java.util.List;
 
 // jersey bundle
-import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.StreamingOutput;
@@ -61,11 +62,16 @@ public class VegasIpsumResource {
     }
     
     @GET 
-    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public StreamingOutput getSomeIpsum() {
-        final List<String> P = _vegasIpsumGenerator.getParagraphs(4, 7);
-        return streamOutStringsArr(P);
+    public StreamingOutput getSomeIpsum(@DefaultValue("1") @QueryParam("minp") int minp,
+                               @DefaultValue("1") @QueryParam("maxp") int maxp,
+                               @DefaultValue("false") @QueryParam("start") boolean start) {
         
+        final List<String> P = _vegasIpsumGenerator.getParagraphs(minp, maxp);
+        
+        P.add(0, "min paragraph count= " + String.valueOf(minp));
+        P.add(0,"max paragraph count= " + String.valueOf(maxp));
+        P.add(0, "start with Vegas ipsum...= " + String.valueOf(start));
+        return streamOutStringsArr(P);
     }
 }

@@ -3,6 +3,10 @@
     font-family: 'Ubuntu', sans-serif;  
 }
 
+.paragraph-num {
+  width: 215px;
+}
+
 .outer {
   padding-top: 10px;
   background-color: lightgrey;
