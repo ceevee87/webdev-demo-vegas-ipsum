@@ -1,11 +1,11 @@
 # webdev-demo-vegas-ipsum
 
 ## Overview
-This project is an Ipsum Lorem generator with a Las Vegas twist. Below is a list of items that are planned for development.
+This project is an Ipsum Lorem generator with a Las Vegas twist.
 
 
 ## Technologies
-This project demonstrates (will demonstrate) the following technologies:
+This project demonstrates the following technologies:
 - RESTful JSON API implemented in Java with Jersey
 - Web service deployment using Apache Tomcat
 - Source code compilation and dependency management using Maven
