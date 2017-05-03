@@ -1,8 +1,5 @@
 # webdev-demo-vegas-ipsum
 
-### << UNDER CONSTRUCTION (end of April/early May --- see progress down below. >>
-
-
 ## Overview
 This project is an Ipsum Lorem generator with a Las Vegas twist. Below is a list of items that are planned for development.
 
@@ -29,6 +26,7 @@ This project demonstrates (will demonstrate) the following technologies:
   * [x] add in ability to start first paragraph, optionally, with 'vegas ipsum dolor ...'
 - [x] update Maven to deploy VegasIpsum WebApi onto an Apache Tomcat server
 - [ ] validate WebApi interface to the VegasIpsum generator with Postman.
+- [ ] improve initial styling of web page (reduce area used by min/max paragraph size inputs).
 
 ## Build
 IMPORTANT: Automatically deploying and undeploying applications to an Apache Tomcat server requires modification of the tomcat-users.xml file. I do not include instructions for doing that here.
