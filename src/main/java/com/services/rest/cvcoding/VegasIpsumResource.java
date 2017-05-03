@@ -35,7 +35,10 @@ import javax.ws.rs.core.StreamingOutput;
  */
 @Path("/")
 public class VegasIpsumResource {
-    private final VegasIpsum _vegasIpsumGenerator;    
+    private final VegasIpsum _vegasIpsumGenerator;
+    
+    // this stuff is all relative to the .class file in the WAR because
+    // I am using the class.getResourceAsStream method.
     private final String _baseLoremTxtFile = "../../../lorem.ipsum.seed.txt";
     private final String _vegasLoremTxtFile = "../../../vegas.ipsum.txt";
     private InputStream _is;

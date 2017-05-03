@@ -74,9 +74,6 @@ public class VegasIpsum implements LoremIpsum {
 
         this._loremChain = new ArrayList<>();
         this._curWordLocation = 0;
-        
-        // load up the base lorem ipsum text
-//        readLoremText(LOREM_FILE_NAME);
     }
 
     public void setSeed(long seed) {
@@ -96,18 +93,22 @@ public class VegasIpsum implements LoremIpsum {
         if (is == null) return;
 
         BufferedReader in = new BufferedReader(new InputStreamReader(is));
+        if (in == null) return;
+        
         List<String> lines = new ArrayList<>();
         String inputLine;
         try {
             while ((inputLine = in.readLine()) != null)
                 lines.add(inputLine);
-        } catch (IOException ex) {
-            _loremChain.add("-E-readVegasText: IOException when reading inputstream.");
+        } catch (IOException ex) { 
+            // I don't want to bring down the entire application.
+            // we can leave the _loremChain empty.
         } 
         try {
             in.close();
         } catch (IOException ex) {
-            _loremChain.add("-E-readVegasText: IOException when closing inputstream.");            
+            // I don't want to bring down the entire application.
+            // we can leave the _loremChain empty.
         }
 
         for (String line : lines) {
@@ -117,7 +118,7 @@ public class VegasIpsum implements LoremIpsum {
             try {
                 freq = Integer.parseInt(data[1]);
             } catch (NumberFormatException ex) {
-                System.out.println("Malformatted line: " + line);
+//                System.out.println("Malformatted line: " + line);
                 continue;
             }
             if (freq < 1) continue;
@@ -132,7 +133,6 @@ public class VegasIpsum implements LoremIpsum {
         
         File fh = new File(fname); 
         if (!fh.exists()) {
-            _loremChain.add("-E-readVegasText: Could not find file: "+fname);
             return;
         }
         
@@ -140,7 +140,9 @@ public class VegasIpsum implements LoremIpsum {
             InputStream is = new FileInputStream(fh);
             readVegasText(is);
         } catch (FileNotFoundException ex) {
-            _loremChain.add("-E-readVegasText: IOException when creating new FileInputStream.");
+            // paranoid ? yes, I know where are checking this twice.
+            // I don't want to bring down the entire application.
+            // we can leave the _loremChain empty.
         }
     }
 
@@ -152,18 +154,22 @@ public class VegasIpsum implements LoremIpsum {
         if (is == null) return;
 
         BufferedReader in = new BufferedReader(new InputStreamReader(is));
+        if (in == null) return;
+        
         List<String> lines = new ArrayList<>();
         String inputLine;
         try {
             while ((inputLine = in.readLine()) != null)
                 lines.add(inputLine);
         } catch (IOException ex) {
-            _loremChain.add("-E-readVegasText: IOException when reading inputstream.");
+            // I don't want to bring down the entire application.
+            // we can leave the _loremChain empty.
         } 
         try {
             in.close();
         } catch (IOException ex) {
-            _loremChain.add("-E-readVegasText: IOException when closing inputstream.");            
+            // I don't want to bring down the entire application.
+            // we can leave the _loremChain empty.
         }
 
         // I want to remove all punctuation. right now, I'm only concerned with
@@ -192,7 +198,6 @@ public class VegasIpsum implements LoremIpsum {
         // in the data
         File fh = new File(fname); 
         if (!fh.exists()) {
-            _loremChain.add("-E-readLoremText: Could not find file: "+fname);
             return;
         }
         
@@ -200,7 +205,8 @@ public class VegasIpsum implements LoremIpsum {
             InputStream is = new FileInputStream(fh);
             readLoremText(is);
         } catch (FileNotFoundException ex) {
-            _loremChain.add("-E-readLoremText: IOException when creating new FileInputStream.");
+            // yes, we are overchecking here. this is a safe-guard if this
+            // code ever gets cut-n-pasted somewhere else.
         }        
     }
 
@@ -251,7 +257,7 @@ public class VegasIpsum implements LoremIpsum {
     
     @Override
     public String getWords(int min, int max) {
-        if (_loremChain.isEmpty()) return "got nothing.";
+        if (_loremChain.isEmpty()) return "";
         
         int numWords = getRandomCount(min, max);
         
