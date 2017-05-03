@@ -265,6 +265,17 @@ public class VegasIpsumTest {
         System.out.println("actual: " + result);
         assertEquals(expResult, result);
     }
+    @Test
+    public void testGetWords_8() {
+        System.out.println("getWords (readVegasText) not null string.");
+        int min = 10;
+        int max = 20;
+        VegasIpsum instance = new VegasIpsum();
+        instance.readVegasText("src/main/resources/vegas.ipsum.txt");
+        instance.setSeed(0L);
+        String result = instance.getWords(min, max);
+        assertNotEquals(null, result);
+    }
     
     /**
      * Test of getParagraphs method, of class VegasIpsum.

@@ -5,7 +5,13 @@
  */
 package com.cvcoding.vegasipsum;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -86,15 +92,24 @@ public class VegasIpsum implements LoremIpsum {
         return String.join(" ", _loremChain);
     }
     
-    public void readVegasText(String fname) {
-        List<String> lines = null;
+    public void readVegasText(InputStream is) {
+        if (is == null) return;
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(is));
+        List<String> lines = new ArrayList<>();
+        String inputLine;
         try {
-            lines = Files.readAllLines(Paths.get(fname));
+            while ((inputLine = in.readLine()) != null)
+                lines.add(inputLine);
         } catch (IOException ex) {
-            Logger.getLogger(Solution.class.getName()).log(Level.SEVERE, null, ex);
-            return ;
+            _loremChain.add("-E-readVegasText: IOException when reading inputstream.");
+        } 
+        try {
+            in.close();
+        } catch (IOException ex) {
+            _loremChain.add("-E-readVegasText: IOException when closing inputstream.");            
         }
-        
+
         for (String line : lines) {
             if (line.length() == 0) continue ;
             String[] data = line.split(":");
@@ -107,23 +122,50 @@ public class VegasIpsum implements LoremIpsum {
             }
             if (freq < 1) continue;
             addWords(data[0], freq);
-//            System.out.print("phrase: " + data[0]);
-//            System.out.println(" , frequency: " + freq);
         }
     }
     
-    public final void readLoremText(String fname) {
+    public void readVegasText(String fname) {
+        // see if the file exists. if not then bail out.
+        // otherwise, create a stream and call the core procedure to read
+        // in the data
+        
+        File fh = new File(fname); 
+        if (!fh.exists()) {
+            _loremChain.add("-E-readVegasText: Could not find file: "+fname);
+            return;
+        }
+        
+        try {
+            InputStream is = new FileInputStream(fh);
+            readVegasText(is);
+        } catch (FileNotFoundException ex) {
+            _loremChain.add("-E-readVegasText: IOException when creating new FileInputStream.");
+        }
+    }
+
+    public void readLoremText(InputStream is) {
         // load the _loremChain variable with base lorem ipusm text that
         // is already included in the project build.
         // later, it will be up to the user to add in additional text items.
-        List<String> lines = null;
-        try {
-            lines = Files.readAllLines(Paths.get(fname));
-        } catch (IOException ex) {
-            Logger.getLogger(Solution.class.getName()).log(Level.SEVERE, null, ex);
-            return ;
-        }
         
+        if (is == null) return;
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(is));
+        List<String> lines = new ArrayList<>();
+        String inputLine;
+        try {
+            while ((inputLine = in.readLine()) != null)
+                lines.add(inputLine);
+        } catch (IOException ex) {
+            _loremChain.add("-E-readVegasText: IOException when reading inputstream.");
+        } 
+        try {
+            in.close();
+        } catch (IOException ex) {
+            _loremChain.add("-E-readVegasText: IOException when closing inputstream.");            
+        }
+
         // I want to remove all punctuation. right now, I'm only concerned with
         // storing words. 
         // we'll deal with putting punctuation back in when the user 
@@ -141,6 +183,24 @@ public class VegasIpsum implements LoremIpsum {
             while(tokenizer.hasMoreTokens()) {
                 _loremChain.add(tokenizer.nextToken());
             }
+        }        
+    }
+    
+    public final void readLoremText(String fname) {
+        // see if the file exists. if not then bail out.
+        // otherwise, create a stream and call the core procedure to read
+        // in the data
+        File fh = new File(fname); 
+        if (!fh.exists()) {
+            _loremChain.add("-E-readLoremText: Could not find file: "+fname);
+            return;
+        }
+        
+        try {
+            InputStream is = new FileInputStream(fh);
+            readLoremText(is);
+        } catch (FileNotFoundException ex) {
+            _loremChain.add("-E-readLoremText: IOException when creating new FileInputStream.");
         }        
     }
 
